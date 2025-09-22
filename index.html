@@ -6,212 +6,1205 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YZA Agricultural Services</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
+    }
+    
+    /* Enhanced animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.08); opacity: 0.9; }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }
+    }
+    
+    .animate-fadeInUp {
+      animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    .animate-fadeInLeft {
+      animation: fadeInLeft 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    .animate-fadeInRight {
+      animation: fadeInRight 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    .animate-pulse-custom {
+      animation: pulse 3s infinite;
+    }
+    
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .animate-glow {
+      animation: glow 2s ease-in-out infinite;
+    }
+    
+    .delay-200 { animation-delay: 200ms; }
+    .delay-400 { animation-delay: 400ms; }
+    .delay-600 { animation-delay: 600ms; }
+    .delay-800 { animation-delay: 800ms; }
+    .delay-1000 { animation-delay: 1000ms; }
+    .delay-1200 { animation-delay: 1200ms; }
+    
+    /* Glass morphism effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .glass-dark {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Enhanced card hover effects */
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card-hover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-15px) scale(1.02);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 30px rgba(16, 185, 129, 0.1);
+    }
+    
+    .card-hover:hover::before {
+      left: 100%;
+    }
+    
+    /* Enhanced progress bar */
+    .progress-bar {
+      height: 6px;
+      width: 0%;
+      background: linear-gradient(90deg, #10B981, #059669, #047857);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+    
+    /* Enhanced table styles */
+    .table-responsive {
+      overflow-x: auto;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(229, 231, 235, 0.1);
+    }
+    
+    th {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    
+    tr:hover {
+      background: rgba(16, 185, 129, 0.05);
+      transform: scale(1.01);
+      transition: all 0.3s ease;
+    }
+    
+    /* Hero gradient overlay */
+    .hero-gradient {
+      background: linear-gradient(135deg, 
+        rgba(17, 24, 39, 0.9) 0%, 
+        rgba(6, 78, 59, 0.8) 50%, 
+        rgba(16, 185, 129, 0.7) 100%);
+    }
+    
+    /* Section backgrounds */
+    .section-gradient-1 {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+    
+    .section-gradient-2 {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+    
+    .section-gradient-3 {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    }
+    
+    /* Enhanced button styles */
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981, #059669);
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      box-shadow: 0 20px 40px -5px rgba(16, 185, 129, 0.6);
+      transform: translateY(-2px);
+    }
+    
+    /* Team member image effects */
+    .team-image {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: grayscale(0.3);
+    }
+    
+    .team-image:hover {
+      filter: grayscale(0);
+      transform: scale(1.1) rotate(2deg);
+    }
+    
+    /* Gallery hover effects */
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.9));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 1;
+    }
+    
+    .gallery-item:hover::before {
+      opacity: 1;
+    }
+    
+    .gallery-item .overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+    
+    .gallery-item:hover .overlay {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    
+    /* Chart container enhancements */
+    .chart-container {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+    }
+  </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-50 text-gray-900">
+  <!-- Enhanced Progress Bar -->
+  <div class="progress-bar" id="progressBar"></div>
 
-  <!-- Navigation Bar -->
-  <nav class="bg-gray-800 text-white fixed w-full z-10 shadow-lg">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#" class="text-2xl font-bold uppercase hover:text-green-400">YZA Agricultural Services</a>
-      <ul class="hidden md:flex space-x-6 text-lg">
-        <li><a href="#mission" class="hover:text-green-400">Mission</a></li>
-        <li><a href="#vision" class="hover:text-green-400">Vision</a></li>
-        <li><a href="#team" class="hover:text-green-400">Team</a></li>
-        <li><a href="#gallery" class="hover:text-green-400">Gallery</a></li>
-        <li><a href="#contact" class="hover:text-green-400">Contact</a></li>
+  <!-- Navigation Bar with Glass Effect -->
+  <nav class="glass-dark text-white fixed w-full z-50 shadow-2xl transition-all duration-500" id="navbar">
+    <div class="container mx-auto px-6 py-5 flex justify-between items-center">
+      <a href="#" class="text-2xl font-black uppercase tracking-wider hover:text-emerald-400 transition-all duration-300 animate-glow">
+        YZA Agricultural Services
+      </a>
+      <ul class="hidden md:flex space-x-8 text-lg font-medium">
+        <li><a href="#mission" class="hover:text-emerald-400 transition-all duration-300 relative group">
+          Mission
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+        </a></li>
+        <li><a href="#vision" class="hover:text-emerald-400 transition-all duration-300 relative group">
+          Vision
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+        </a></li>
+        <li><a href="#team" class="hover:text-emerald-400 transition-all duration-300 relative group">
+          Team
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+        </a></li>
+        <li><a href="#performance" class="hover:text-emerald-400 transition-all duration-300 relative group">
+          Performance
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+        </a></li>
+        <li><a href="#gallery" class="hover:text-emerald-400 transition-all duration-300 relative group">
+          Gallery
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+        </a></li>
+        <li><a href="#contact" class="hover:text-emerald-400 transition-all duration-300 relative group">
+          Contact
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
+        </a></li>
       </ul>
+      
+      <!-- Enhanced Mobile menu button -->
+      <div class="md:hidden">
+        <button id="menuBtn" class="text-white focus:outline-none p-2 rounded-lg glass hover:bg-white hover:bg-opacity-20 transition-all duration-300">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Enhanced Mobile menu -->
+    <div id="mobileMenu" class="hidden md:hidden glass-dark mx-6 mb-4 rounded-xl border border-white border-opacity-20">
+      <a href="#mission" class="block py-4 px-6 hover:text-emerald-400 hover:bg-white hover:bg-opacity-10 transition-all duration-300 rounded-lg">Mission</a>
+      <a href="#vision" class="block py-4 px-6 hover:text-emerald-400 hover:bg-white hover:bg-opacity-10 transition-all duration-300 rounded-lg">Vision</a>
+      <a href="#team" class="block py-4 px-6 hover:text-emerald-400 hover:bg-white hover:bg-opacity-10 transition-all duration-300 rounded-lg">Team</a>
+      <a href="#performance" class="block py-4 px-6 hover:text-emerald-400 hover:bg-white hover:bg-opacity-10 transition-all duration-300 rounded-lg">Performance</a>
+      <a href="#gallery" class="block py-4 px-6 hover:text-emerald-400 hover:bg-white hover:bg-opacity-10 transition-all duration-300 rounded-lg">Gallery</a>
+      <a href="#contact" class="block py-4 px-6 hover:text-emerald-400 hover:bg-white hover:bg-opacity-10 transition-all duration-300 rounded-lg">Contact</a>
     </div>
   </nav>
 
-<!-- Hero Section with Background Image -->
-<section id="hero" class="relative h-screen bg-cover bg-center pt-24" style="background-image: url('forward.webp');">
-  <!-- Gray Overlay with Blur -->
-  <div class="absolute inset-0 bg-gray-800 opacity-60 backdrop-blur-sm"></div>
-  <div class="container mx-auto h-full flex justify-center items-center text-center text-white relative z-10">
-    <div>
-      <h1 class="text-8xl font-bold mb-4">YZA Agricultural Services</h1>
-        <p class="text-4xl mb-6 italic">"Season-Ready Solutions for Agricultural Success"</p>
-      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jhn.yzas@gmail.com&su=Inquiry%20from%20Website" class="bg-green-500 text-white py-2 px-6 rounded-full hover:bg-green-600 relative z-20" target="_blank">Inquire Now</a>
+  <!-- Enhanced Hero Section -->
+  <section id="hero" class="relative h-screen bg-cover bg-center bg-fixed" style="background-image: url('forward.webp');">
+    <div class="absolute inset-0 hero-gradient"></div>
+    <div class="container mx-auto h-full flex justify-center items-center text-center text-white relative z-10 px-6">
+      <div class="opacity-0 animate-fadeInUp max-w-4xl">
+        <h1 class="text-6xl md:text-8xl lg:text-9xl font-black mb-8 tracking-tight bg-gradient-to-r from-white via-emerald-200 to-emerald-400 bg-clip-text text-transparent animate-float">
+          YZA Agricultural Services
+        </h1>
+        <p class="text-2xl md:text-4xl lg:text-5xl mb-12 italic font-light tracking-wide opacity-90">
+          "Season-Ready Solutions for Agricultural Success"
+        </p>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jhn.yzas@gmail.com&su=Inquiry%20from%20Website" 
+           class="inline-flex items-center gap-3 btn-primary text-white py-4 px-10 rounded-full font-bold text-lg tracking-wide animate-pulse-custom" 
+           target="_blank">
+          <span>Inquire Now</span>
+          <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform duration-300"></i>
+        </a>
+      </div>
     </div>
-  </div>
-</section>
+    
+    <!-- Enhanced scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+      <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+        <div class="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+      </div>
+    </div>
+  </section>
 
-
-<!-- Mission Section -->
-<section id="mission" class="py-16 bg-white">
-  <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-bold text-center mb-6">Our Mission</h2>
-    <p class="text-lg text-gray-700 text-center mx-auto max-w-4xl">
-      We aim to maintain a modern fleet of trucks with state-of-the-art tracking and monitoring systems, establish a skilled team of agricultural workers, build strong client partnerships by anticipating seasonal needs, and incorporate data-driven strategies to optimize routes, minimize costs, and enhance overall productivity and customer satisfaction.
-    </p>
-  </div>
-</section>
-
-
-
-  <!-- Vision Section -->
-  <section id="vision" class="py-16 bg-gray-100">
+  <!-- Enhanced Mission Section -->
+  <section id="mission" class="py-20 section-gradient-1">
     <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center mb-6">Our Vision</h2>
-      <p class="text-lg text-center leading-relaxed mb-12">
-        “To be the trusted partner in agriculture, delivering reliable trucking and manpower services that empower agricultural companies to operate efficiently, achieve their goals, and drive sustainable growth.”
-      </p>
+      <div class="text-center mb-16">
+        <h2 class="text-5xl md:text-6xl font-black mb-6 opacity-0 animate-fadeInUp bg-gradient-to-r from-gray-800 to-emerald-600 bg-clip-text text-transparent">
+          Our Mission
+        </h2>
+        <div class="w-32 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mb-8 rounded-full opacity-0 animate-fadeInUp delay-400"></div>
+      </div>
+      
+      <div class="max-w-6xl mx-auto glass rounded-3xl p-12 opacity-0 animate-fadeInUp delay-600">
+        <p class="text-xl md:text-2xl text-gray-700 text-center leading-relaxed font-light">
+          We aim to maintain a modern fleet of trucks with state-of-the-art tracking and monitoring systems, establish a skilled team of agricultural workers, build strong client partnerships by anticipating seasonal needs, and incorporate data-driven strategies to optimize routes, minimize costs, and enhance overall productivity and customer satisfaction.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Vision Section -->
+  <section id="vision" class="py-20 section-gradient-2 text-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl md:text-6xl font-black mb-6 opacity-0 animate-fadeInUp bg-gradient-to-r from-white to-emerald-400 bg-clip-text text-transparent">
+          Our Vision
+        </h2>
+        <div class="w-32 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mb-12 rounded-full opacity-0 animate-fadeInUp delay-400"></div>
+      </div>
+      
+      <div class="max-w-6xl mx-auto mb-16">
+        <div class="glass-dark rounded-3xl p-12 opacity-0 animate-fadeInUp delay-600">
+          <p class="text-xl md:text-2xl text-center leading-relaxed font-light">
+            "To be the trusted partner in agriculture, delivering reliable trucking and manpower services that empower agricultural companies to operate efficiently, achieve their goals, and drive sustainable growth."
+          </p>
+        </div>
+      </div>
+      
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="p-6 bg-white rounded-lg shadow-md">
-          <h3 class="text-2xl font-bold text-green-600 mb-4">Efficient Logistics</h3>
-          <ul class="list-disc list-inside text-gray-700">
-            <li>Seamless, on-time trucking for agricultural products, equipment, and supplies.</li>
-            <li>Modern fleet management to ensure reliability, reduce delays, and optimize routes.</li>
+        <div class="glass-dark rounded-2xl p-8 card-hover opacity-0 animate-fadeInLeft delay-200 group">
+          <div class="text-emerald-400 text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-truck"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-emerald-400 mb-6">Efficient Logistics</h3>
+          <ul class="space-y-3 text-gray-300">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Seamless, on-time trucking for agricultural products, equipment, and supplies.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Modern fleet management to ensure reliability, reduce delays, and optimize routes.</span>
+            </li>
           </ul>
         </div>
-        <div class="p-6 bg-white rounded-lg shadow-md">
-          <h3 class="text-2xl font-bold text-green-600 mb-4">Skilled Manpower</h3>
-          <ul class="list-disc list-inside text-gray-700">
-            <li>Dependable workforce for planting, harvesting, packaging, and operations.</li>
-            <li>Emphasis on safety, productivity, and expertise in agricultural tasks.</li>
-            <li>Data-driven route optimization and workforce allocation.</li>
+        
+        <div class="glass-dark rounded-2xl p-8 card-hover opacity-0 animate-fadeInUp delay-400 group">
+          <div class="text-emerald-400 text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-emerald-400 mb-6">Skilled Manpower</h3>
+          <ul class="space-y-3 text-gray-300">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Dependable workforce for planting, harvesting, packaging, and operations.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Emphasis on safety, productivity, and expertise in agricultural tasks.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Data-driven route optimization and workforce allocation.</span>
+            </li>
           </ul>
         </div>
-        <div class="p-6 bg-white rounded-lg shadow-md">
-          <h3 class="text-2xl font-bold text-green-600 mb-4">Customer-Centric Approach</h3>
-          <ul class="list-disc list-inside text-gray-700">
-            <li>Tailored services to meet unique needs of agricultural companies.</li>
-            <li>Consistent, high-quality service with transparency and open communication.</li>
+        
+        <div class="glass-dark rounded-2xl p-8 card-hover opacity-0 animate-fadeInRight delay-600 group">
+          <div class="text-emerald-400 text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-emerald-400 mb-6">Customer-Centric Approach</h3>
+          <ul class="space-y-3 text-gray-300">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Tailored services to meet unique needs of agricultural companies.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Consistent, high-quality service with transparency and open communication.</span>
+            </li>
           </ul>
         </div>
-        <div class="p-6 bg-white rounded-lg shadow-md">
-          <h3 class="text-2xl font-bold text-green-600 mb-4">Sustainability and Innovation</h3>
-          <ul class="list-disc list-inside text-gray-700">
-            <li>Eco-friendly trucking to minimize carbon emissions.</li>
-            <li>Investment in training and technology to boost workforce efficiency and lower client costs.</li>
+        
+        <div class="glass-dark rounded-2xl p-8 card-hover opacity-0 animate-fadeInLeft delay-800 group">
+          <div class="text-emerald-400 text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-leaf"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-emerald-400 mb-6">Sustainability and Innovation</h3>
+          <ul class="space-y-3 text-gray-300">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Eco-friendly trucking to minimize carbon emissions.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Investment in training and technology to boost workforce efficiency and lower client costs.</span>
+            </li>
           </ul>
         </div>
-        <div class="p-6 bg-white rounded-lg shadow-md">
-          <h3 class="text-2xl font-bold text-green-600 mb-4">Scalability and Growth</h3>
-          <ul class="list-disc list-inside text-gray-700">
-            <li>Serving businesses of all sizes, from local farms to multinationals.</li>
-            <li>Expanding into value-added services like equipment leasing and supply chain management.</li>
+        
+        <div class="glass-dark rounded-2xl p-8 card-hover opacity-0 animate-fadeInUp delay-1000 group">
+          <div class="text-emerald-400 text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-emerald-400 mb-6">Scalability and Growth</h3>
+          <ul class="space-y-3 text-gray-300">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Serving businesses of all sizes, from local farms to multinationals.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Expanding into value-added services like equipment leasing and supply chain management.</span>
+            </li>
           </ul>
         </div>
-        <div class="p-6 bg-white rounded-lg shadow-md">
-          <h3 class="text-2xl font-bold text-green-600 mb-4">Community and Economic Impact</h3>
-          <ul class="list-disc list-inside text-gray-700">
-            <li>Job creation and skill development in rural areas.</li>
-            <li>Supporting food security and economic resilience through strong agricultural partnerships.</li>
+        
+        <div class="glass-dark rounded-2xl p-8 card-hover opacity-0 animate-fadeInRight delay-1200 group">
+          <div class="text-emerald-400 text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-hands-helping"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-emerald-400 mb-6">Community and Economic Impact</h3>
+          <ul class="space-y-3 text-gray-300">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Job creation and skill development in rural areas.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+              <span>Supporting food security and economic resilience through strong agricultural partnerships.</span>
+            </li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Team Section -->
-  <section id="team" class="py-16 bg-gray-100">
+  <!-- Enhanced Team Section -->
+  <section id="team" class="py-20 section-gradient-3">
     <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center mb-6">Our Team</h2>
-      <p class="text-center text-lg mb-12">
-        Meet the dedicated team driving YZA Agricultural Services forward.
-      </p>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl md:text-6xl font-black mb-6 opacity-0 animate-fadeInUp bg-gradient-to-r from-gray-800 to-emerald-600 bg-clip-text text-transparent">
+          Our Team
+        </h2>
+        <div class="w-32 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mb-8 rounded-full opacity-0 animate-fadeInUp delay-400"></div>
+        <p class="text-xl text-gray-700 max-w-2xl mx-auto opacity-0 animate-fadeInUp delay-600">
+          Meet the dedicated team driving YZA Agricultural Services forward.
+        </p>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-12">
         <!-- Team Member 1 -->
-        <div class="text-center">
-          <img src="john.webp" alt="John Robert M. Ocumen" class="w-[300px] h-[300px] mx-auto rounded-full shadow-md mb-4 transition-transform duration-300 transform hover:scale-110">
-          <h3 class="text-2xl font-bold">John Robert M. Ocumen</h3>
-          <p class="text-green-600">Proprietor / HSE Manager</p>
+        <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
+          <div class="relative inline-block mb-6">
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+            <img src="john.webp" alt="John Robert M. Ocumen" class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">John Robert M. Ocumen</h3>
+          <p class="text-emerald-600 font-semibold text-lg">Proprietor / HSE Manager</p>
         </div>
+        
         <!-- Team Member 2 -->
-        <div class="text-center">
-          <img src="leo.webp" alt="John Leonard Galao" class="w-[300px] h-[300px] mx-auto rounded-full shadow-md mb-4 transition-transform duration-300 transform hover:scale-110">
-          <h3 class="text-2xl font-bold">John Leonard Galao</h3>
-          <p class="text-green-600">Operations Manager</p>
+        <div class="text-center opacity-0 animate-fadeInUp delay-400 group">
+          <div class="relative inline-block mb-6">
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+            <img src="leo.webp" alt="John Leonard Galao" class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">John Leonard Galao</h3>
+          <p class="text-emerald-600 font-semibold text-lg">Operations Manager</p>
         </div>
+        
         <!-- Team Member 3 -->
-        <div class="text-center">
-          <img src="reymar.webp" alt="Reymar Valera" class="w-[300px] h-[300px] mx-auto rounded-full shadow-md mb-4 transition-transform duration-300 transform hover:scale-110">
-          <h3 class="text-2xl font-bold">Reymar Valera</h3>
-          <p class="text-green-600">Area Manager</p>
+        <div class="text-center opacity-0 animate-fadeInUp delay-600 group">
+          <div class="relative inline-block mb-6">
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+            <img src="reymar.webp" alt="Reymar Valera" class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">Reymar Valera</h3>
+          <p class="text-emerald-600 font-semibold text-lg">Area Manager</p>
         </div>
+        
         <!-- Team Member 4 -->
-        <div class="text-center">
-          <img src="chairles.webp" alt="Chairles Adane" class="w-[300px] h-[300px] mx-auto rounded-full shadow-md mb-4 transition-transform duration-300 transform hover:scale-110">
-          <h3 class="text-2xl font-bold">Chairles Adane</h3>
-          <p class="text-green-600">Clerk / Programmer</p>
+        <div class="text-center opacity-0 animate-fadeInUp delay-800 group">
+          <div class="relative inline-block mb-6">
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+            <img src="chairles.webp" alt="Chairles Adane" class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">Chairles Adane</h3>
+          <p class="text-emerald-600 font-semibold text-lg">Clerk / Programmer</p>
         </div>
+        
         <!-- Team Member 5 -->
-        <div class="text-center">
-          <img src="andrew.webp" alt="Andrew Lacambra" class="w-[300px] h-[300px] mx-auto rounded-full shadow-md mb-4 transition-transform duration-300 transform hover:scale-110">
-          <h3 class="text-2xl font-bold">Andrew Lacambra</h3>
-          <p class="text-green-600">Clerk / Programmer</p>
+        <div class="text-center opacity-0 animate-fadeInUp delay-1000 group">
+          <div class="relative inline-block mb-6">
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+            <img src="andrew.webp" alt="Andrew Lacambra" class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">Andrew Lacambra</h3>
+          <p class="text-emerald-600 font-semibold text-lg">Clerk / Programmer</p>
         </div>
       </div>
     </div>
   </section>
 
-<!-- Gallery Section -->
-<section id="gallery" class="py-16 bg-white">
-  <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-bold text-center mb-6">Gallery</h2>
-    <p class="text-center text-lg mb-12">
-      Browse through some of our agricultural services in action.
-    </p>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Image 1 -->
-      <div class="w-full h-64 bg-gray-300 rounded-lg overflow-hidden group">
-        <img src="10wheeler.webp" alt="Gallery Image 1" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500 ease-in-out">
+  <!-- Enhanced Performance Dashboard Section -->
+  <section id="performance" class="py-20 section-gradient-2 text-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl md:text-6xl font-black mb-6 opacity-0 animate-fadeInUp bg-gradient-to-r from-white to-emerald-400 bg-clip-text text-transparent">
+          Performance Dashboard 2024-2025
+        </h2>
+        <div class="w-32 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mb-8 rounded-full opacity-0 animate-fadeInUp delay-400"></div>
       </div>
-      <!-- Image 2 -->
-      <div class="w-full h-64 bg-gray-300 rounded-lg overflow-hidden group">
-        <img src="elf.webp" alt="Gallery Image 2" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500 ease-in-out">
+      
+      <!-- Enhanced Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
+        <div class="glass-dark rounded-2xl p-8 text-center card-hover opacity-0 animate-fadeInUp delay-200 group">
+          <div class="text-4xl font-black text-emerald-400 mb-3 group-hover:scale-110 transition-transform duration-300">667.2</div>
+          <div class="text-lg font-semibold text-emerald-300 mb-2">Total Area (ha)</div>
+          <div class="text-sm text-emerald-200">Across 22 Municipalities</div>
+        </div>
+        
+        <div class="glass-dark rounded-2xl p-8 text-center card-hover opacity-0 animate-fadeInUp delay-400 group">
+          <div class="text-4xl font-black text-blue-400 mb-3 group-hover:scale-110 transition-transform duration-300">99.87%</div>
+          <div class="text-lg font-semibold text-blue-300 mb-2">Success Rate</div>
+          <div class="text-sm text-blue-200">Field Quality Performance</div>
+        </div>
+        
+        <div class="glass-dark rounded-2xl p-8 text-center card-hover opacity-0 animate-fadeInUp delay-600 group">
+          <div class="text-4xl font-black text-yellow-400 mb-3 group-hover:scale-110 transition-transform duration-300">0.13%</div>
+          <div class="text-lg font-semibold text-yellow-300 mb-2">Failure Rate</div>
+          <div class="text-sm text-yellow-200">Field Quality Performance</div>
+        </div>
+        
+        <div class="glass-dark rounded-2xl p-8 text-center card-hover opacity-0 animate-fadeInUp delay-800 group">
+          <div class="text-4xl font-black text-red-400 mb-3 group-hover:scale-110 transition-transform duration-300">₱13,602</div>
+          <div class="text-lg font-semibold text-red-300 mb-2">Final Penalty</div>
+          <div class="text-sm text-red-200">0.90ha YZA Failure</div>
+        </div>
       </div>
-      <!-- Image 3 -->
-      <div class="w-full h-64 bg-gray-300 rounded-lg overflow-hidden group">
-        <img src="elfs.webp" alt="Gallery Image 3" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500 ease-in-out">
+      
+      <!-- Enhanced Charts Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        <!-- Municipalities Chart -->
+        <div class="chart-container p-8 card-hover opacity-0 animate-fadeInUp delay-200">
+          <h3 class="text-2xl font-bold text-center mb-6 text-white">Area by Municipality (All 22 Municipalities)</h3>
+          <div class="h-80">
+            <canvas id="municipalityChart"></canvas>
+          </div>
+        </div>
+        
+        <!-- Performance Metrics -->
+        <div class="chart-container p-8 card-hover opacity-0 animate-fadeInUp delay-400">
+          <h3 class="text-2xl font-bold text-center mb-6 text-white">Performance Metrics</h3>
+          <div class="h-80">
+            <canvas id="performanceChart"></canvas>
+          </div>
+        </div>
       </div>
-      <!-- Image 4 -->
-      <div class="w-full h-64 bg-gray-300 rounded-lg overflow-hidden group">
-        <img src="forwards.webp" alt="Gallery Image 4" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500 ease-in-out">
+      
+      <!-- Enhanced Municipality Breakdown Table -->
+      <div class="chart-container p-8 mb-16 card-hover opacity-0 animate-fadeInUp delay-700">
+        <h3 class="text-3xl font-bold text-center mb-8 text-white">Complete Municipality Breakdown</h3>
+        <div class="table-responsive">
+          <table class="w-full text-white">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Area (ha)</th>
+                <th>Volume (kg)</th>
+                <th>Service Fee</th>
+                <th>Grower SDK</th>
+                <th>Blending Cost</th>
+                <th>Total Amount</th>
+                <th>Final Penalty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-semibold">YZA's Failure</td>
+                <td>0.90</td>
+                <td>5,771.60</td>
+                <td>₱8,158.94</td>
+                <td>₱86,574.00</td>
+                <td>₱0</td>
+                <td>₱94,732.94</td>
+                <td class="text-red-400 font-bold">₱13,601.91</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="mt-8 glass rounded-2xl p-6">
+          <h4 class="text-xl font-bold mb-4 text-blue-400 flex items-center gap-3">
+            <i class="fas fa-info-circle"></i>
+            Note:
+          </h4>
+          <p class="text-blue-200 leading-relaxed">
+            Only 0.13% out of 667.20ha failed due to YZA's quality issues. The final penalty of ₱13,601.91 represents just a small fraction of the total operation value, demonstrating YZA's high success rate and quality performance.
+          </p>
+        </div>
       </div>
-      <!-- Image 5 -->
-      <div class="w-full h-64 bg-gray-300 rounded-lg overflow-hidden group">
-        <img src="forwa.webp" alt="Gallery Image 5" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500 ease-in-out">
+      
+      <!-- Enhanced Quality Summary -->
+      <div class="glass-dark rounded-3xl p-12 opacity-0 animate-fadeInUp delay-1000">
+        <h3 class="text-3xl font-bold text-center mb-12 text-emerald-400">Quality Achievement</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div>
+            <h4 class="text-xl font-bold mb-6 text-emerald-300 flex items-center gap-3">
+              <i class="fas fa-trophy text-2xl"></i>
+              Success Highlights
+            </h4>
+            <ul class="space-y-4 text-emerald-200">
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>99.87% quality success rate across all operations</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>Only 0.90ha failed due to YZA's SMP issues</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>555.30ha passed all quality metrics</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>Effective management across 22 municipalities</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>Successful deployment of 6 different hybrids</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold mb-6 text-emerald-300 flex items-center gap-3">
+              <i class="fas fa-chart-line text-2xl"></i>
+              Performance Notes
+            </h4>
+            <ul class="space-y-4 text-emerald-200">
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>Minimal penalty impact due to high success rate</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>Strong recovery processes for any issues</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>Continuous improvement in quality control</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>Excellent grower relationships maintained</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-400 mt-1 flex-shrink-0"></i>
+                <span>Effective territory management</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-</section>
+  </section>
 
-  <!-- Footer Section -->
-  <footer id="contact" class="bg-gray-800 text-white py-16">
-    <div class="container mx-auto text-center">
-      <h2 class="text-4xl font-bold text-green-500 mb-6">Contact Us</h2>
-      <div class="flex justify-center mb-6">
-<!-- Email -->
-<div class="mx-4">
-  <p class="text-lg mb-2">Email</p>
-  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jhn.yzas@gmail.com" class="flex items-center justify-center text-green-500 hover:text-green-400 transition-all duration-300" target="_blank">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12l-6 6M3 12l6-6m12 6H3" />
-    </svg>
-    jhn.yzas@gmail.com
-  </a>
-</div>
+  <!-- Enhanced Gallery Section -->
+  <section id="gallery" class="py-20 section-gradient-1">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl md:text-6xl font-black mb-6 opacity-0 animate-fadeInUp bg-gradient-to-r from-gray-800 to-emerald-600 bg-clip-text text-transparent">
+          Gallery
+        </h2>
+        <div class="w-32 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mb-8 rounded-full opacity-0 animate-fadeInUp delay-400"></div>
+        <p class="text-xl text-gray-700 max-w-2xl mx-auto opacity-0 animate-fadeInUp delay-600">
+          Browse through some of our agricultural services in action.
+        </p>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Image 1 -->
+        <div class="gallery-item w-full h-80 bg-gray-300 rounded-2xl overflow-hidden group opacity-0 animate-fadeInLeft delay-200 shadow-2xl">
+          <img src="elf.webp" alt="Agricultural Vehicle" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-in-out">
+          <div class="overlay">
+            <div class="text-white text-center">
+              <i class="fas fa-truck text-4xl mb-3"></i>
+              <span class="text-2xl font-bold block">Transport Services</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Image 2 -->
+        <div class="gallery-item w-full h-80 bg-gray-300 rounded-2xl overflow-hidden group opacity-0 animate-fadeInUp delay-400 shadow-2xl">
+          <img src="elfs.webp" alt="Agricultural Transport" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-in-out">
+          <div class="overlay">
+            <div class="text-white text-center">
+              <i class="fas fa-shipping-fast text-4xl mb-3"></i>
+              <span class="text-2xl font-bold block">Transport Services</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Image 3 -->
+        <div class="gallery-item w-full h-80 bg-gray-300 rounded-2xl overflow-hidden group opacity-0 animate-fadeInRight delay-600 shadow-2xl">
+          <img src="forwa.webp" alt="Agricultural Logistics" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-in-out">
+          <div class="overlay">
+            <div class="text-white text-center">
+              <i class="fas fa-warehouse text-4xl mb-3"></i>
+              <span class="text-2xl font-bold block">Transport Services</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Image 4 -->
+        <div class="gallery-item w-full h-80 bg-gray-300 rounded-2xl overflow-hidden group opacity-0 animate-fadeInLeft delay-800 shadow-2xl">
+          <img src="forward.webp" alt="Farm Support" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-in-out">
+          <div class="overlay">
+            <div class="text-white text-center">
+              <i class="fas fa-seedling text-4xl mb-3"></i>
+              <span class="text-2xl font-bold block">Transport Services</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Image 5 -->
+        <div class="gallery-item w-full h-80 bg-gray-300 rounded-2xl overflow-hidden group opacity-0 animate-fadeInUp delay-1000 shadow-2xl">
+          <img src="forwards.webp" alt="Agricultural Equipment" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-in-out">
+          <div class="overlay">
+            <div class="text-white text-center">
+              <i class="fas fa-cogs text-4xl mb-3"></i>
+              <span class="text-2xl font-bold block">Transport Services</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Image 6 - Placeholder -->
+        <div class="w-full h-80 bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-2xl overflow-hidden group opacity-0 animate-fadeInRight delay-1200 flex items-center justify-center shadow-2xl card-hover">
+          <div class="text-white text-center">
+            <i class="fas fa-plus text-6xl mb-4 animate-pulse"></i>
+            <p class="text-xl font-bold">More Coming Soon</p>
+            <p class="text-emerald-200 mt-2">Stay tuned for updates</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Footer Section -->
+  <footer id="contact" class="section-gradient-2 text-white py-20">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl md:text-6xl font-black mb-6 opacity-0 animate-fadeInUp bg-gradient-to-r from-white to-emerald-400 bg-clip-text text-transparent">
+          Contact Us
+        </h2>
+        <div class="w-32 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mb-8 rounded-full opacity-0 animate-fadeInUp delay-400"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <!-- Email -->
+        <div class="text-center glass-dark rounded-2xl p-8 card-hover opacity-0 animate-fadeInLeft delay-600 group">
+          <div class="text-4xl text-emerald-400 mb-4 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <p class="text-xl font-bold mb-3">Email</p>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jhn.yzas@gmail.com" class="text-emerald-400 hover:text-emerald-300 transition-all duration-300 font-semibold" target="_blank">
+            jhn.yzas@gmail.com
+          </a>
+        </div>
+        
         <!-- Phone -->
-        <div class="mx-4">
-          <p class="text-lg mb-2">Phone</p>
-          <a href="tel:+639266199200" class="flex items-center justify-center text-green-500 hover:text-green-400 transition-all duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V8a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v3H2v9h20v-9h-4z" />
-            </svg>
+        <div class="text-center glass-dark rounded-2xl p-8 card-hover opacity-0 animate-fadeInUp delay-800 group">
+          <div class="text-4xl text-emerald-400 mb-4 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-phone"></i>
+          </div>
+          <p class="text-xl font-bold mb-3">Phone</p>
+          <a href="tel:+639266199200" class="text-emerald-400 hover:text-emerald-300 transition-all duration-300 font-semibold">
             +63 926 619 9200
           </a>
         </div>
+        
+        <!-- Address -->
+        <div class="text-center glass-dark rounded-2xl p-8 card-hover opacity-0 animate-fadeInRight delay-1000 group">
+          <div class="text-4xl text-emerald-400 mb-4 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <p class="text-xl font-bold mb-3">Address</p>
+          <p class="text-gray-300 leading-relaxed">Zone 2 #124 Bisal, 2430 Manaoag Pangasinan, Philippines</p>
+        </div>
       </div>
-      <p class="text-lg mb-6">Address: Zone 2 #124 Bisal, 2430 Manaoag Pangasinan, Philippines</p>
       
-      <div class="border-t border-gray-600 pt-6">
-        <p class="text-sm">&copy; 2023 YZA Agricultural Services. All rights reserved.</p>
+      <div class="border-t border-gray-600 pt-8 mt-12 opacity-0 animate-fadeInUp delay-1200">
+        <p class="text-center text-gray-400">&copy; 2025 YZA Agricultural Services. All rights reserved.</p>
       </div>
     </div>
   </footer>
-  
+
+  <script>
+    // Complete data for all 22 municipalities from your table
+    const allMunicipalityData = {
+      'SISON': 470.00,
+      'ROSARIO': 45.10,
+      'CABANATUAN CITY': 27.55,
+      'UMINGAN': 24.35,
+      'STA ROSA': 22.80,
+      'LA PAZ': 14.15,
+      'SAN ANTONIO': 12.00,
+      'JAEN': 9.20,
+      'BINALONAN': 8.60,
+      'CAPAS': 8.50,
+      'SAN LEONARDO': 6.05,
+      'GEN TINIO': 5.75,
+      'SAN MANUEL': 4.00,
+      'QUIRINO MAGSAYSAY': 2.60,
+      'PALAYAN CITY': 1.50,
+      'NATIVIDAD': 1.20,
+      'POZORRUBIO': 1.20,
+      'ZARRAGOSA': 1.00,
+      'TARLAC CITY': 0.50,
+      'VICTORIA': 0.50,
+      'URDANETA CITY': 0.45,
+      'TUBA': 0.40
+    };
+
+    // Data for charts - showing all 22 municipalities
+    const municipalityData = {
+      labels: ['SISON', 'ROSARIO', 'CABANATUAN CITY', 'UMINGAN', 'STA ROSA', 'LA PAZ', 'SAN ANTONIO', 'JAEN', 'BINALONAN', 'CAPAS', 'SAN LEONARDO', 'GEN TINIO', 'SAN MANUEL', 'QUIRINO MAGSAYSAY', 'PALAYAN CITY', 'NATIVIDAD', 'POZORRUBIO', 'ZARRAGOSA', 'TARLAC CITY', 'VICTORIA', 'URDANETA CITY', 'TUBA'],
+      data: [470.00, 45.10, 27.55, 24.35, 22.80, 14.15, 12.00, 9.20, 8.60, 8.50, 6.05, 5.75, 4.00, 2.60, 1.50, 1.20, 1.20, 1.00, 0.50, 0.50, 0.45, 0.40]
+    };
+
+    const hybridData = {
+      labels: ['PSI', 'ZETA', 'LAMBDA', 'DELTA', 'CHI', 'RHO'],
+      data: [15, 8, 6, 4, 3, 2],
+      backgroundColor: [
+        'rgba(34, 197, 94, 0.7)',
+        'rgba(59, 130, 246, 0.7)',
+        'rgba(168, 85, 247, 0.7)',
+        'rgba(245, 158, 11, 0.7)',
+        'rgba(239, 68, 68, 0.7)',
+        'rgba(20, 184, 166, 0.7)'
+      ]
+    };
+
+    const performanceData = {
+      labels: ['Passed', 'OUTCROSS', 'OUTCROSS+ROUGING', 'SELFING', 'Failed', 'MIXED TERRITORY', 'YZA Failure'],
+      data: [555.30, 73.05, 26.60, 8.65, 8.65, 7.75, 0.90],
+      backgroundColor: [
+        'rgba(34, 197, 94, 0.8)',
+        'rgba(107, 114, 128, 0.7)',
+        'rgba(245, 158, 11, 0.7)',
+        'rgba(239, 68, 68, 0.7)',
+        'rgba(220, 53, 69, 0.9)',
+        'rgba(124, 58, 237, 0.7)',
+        'rgba(220, 20, 60, 0.9)'
+      ]
+    };
+
+    // Initialize charts when the page loads
+    window.addEventListener('load', function() {
+      // Municipality Chart
+      const municipalityCtx = document.getElementById('municipalityChart').getContext('2d');
+      new Chart(municipalityCtx, {
+        type: 'doughnut',
+        data: {
+          labels: municipalityData.labels,
+          datasets: [{
+            data: municipalityData.data,
+            backgroundColor: [
+              'rgba(34, 197, 94, 0.8)',
+              'rgba(59, 130, 246, 0.8)',
+              'rgba(168, 85, 247, 0.8)',
+              'rgba(245, 158, 11, 0.8)',
+              'rgba(239, 68, 68, 0.8)',
+              'rgba(20, 184, 166, 0.8)',
+              'rgba(251, 146, 60, 0.8)',
+              'rgba(156, 163, 175, 0.8)',
+              'rgba(244, 63, 94, 0.8)',
+              'rgba(16, 185, 129, 0.8)',
+              'rgba(99, 102, 241, 0.8)',
+              'rgba(236, 72, 153, 0.8)',
+              'rgba(139, 69, 19, 0.8)',
+              'rgba(255, 20, 147, 0.8)',
+              'rgba(75, 0, 130, 0.8)',
+              'rgba(255, 165, 0, 0.8)',
+              'rgba(128, 0, 128, 0.8)',
+              'rgba(255, 69, 0, 0.8)',
+              'rgba(46, 125, 50, 0.8)',
+              'rgba(13, 71, 161, 0.8)',
+              'rgba(191, 54, 12, 0.8)',
+              'rgba(101, 31, 255, 0.8)'
+            ],
+            borderWidth: 2,
+            borderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                boxWidth: 10,
+                padding: 6,
+                font: {
+                  size: 10
+                },
+                color: '#ffffff'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const percentage = ((context.parsed / 667.20) * 100).toFixed(1);
+                  return context.label + ': ' + context.parsed + ' ha (' + percentage + '%)';
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Performance Chart
+      const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+      new Chart(performanceCtx, {
+        type: 'bar',
+        data: {
+          labels: performanceData.labels,
+          datasets: [{
+            label: 'Area (ha)',
+            data: performanceData.data,
+            backgroundColor: performanceData.backgroundColor,
+            borderWidth: 1,
+            borderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Area (hectares)',
+                color: '#ffffff'
+              },
+              ticks: {
+                color: '#ffffff'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Performance Categories',
+                color: '#ffffff'
+              },
+              ticks: {
+                maxRotation: 45,
+                color: '#ffffff'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const percentage = ((context.parsed.y / 667.20) * 100).toFixed(2);
+                  return context.dataset.label + ': ' + context.parsed.y + ' ha (' + percentage + '%)';
+                }
+              }
+            }
+          }
+        }
+      });
+    });
+
+    // Enhanced scroll progress bar
+    window.onscroll = function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progressBar").style.width = scrolled + "%";
+      
+      // Enhanced navbar background change on scroll
+      const navbar = document.getElementById("navbar");
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+        navbar.style.backdropFilter = 'blur(20px)';
+      } else {
+        navbar.classList.add('glass-dark');
+      }
+    };
+
+    // Mobile menu toggle with enhanced animation
+    document.getElementById('menuBtn').addEventListener('click', function() {
+      const menu = document.getElementById('mobileMenu');
+      const icon = this.querySelector('i');
+      
+      menu.classList.toggle('hidden');
+      
+      // Animate hamburger to X
+      if (menu.classList.contains('hidden')) {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      } else {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      }
+    });
+
+    // Enhanced Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100');
+          
+          // Add stagger effect for cards
+          if (entry.target.classList.contains('card-hover')) {
+            setTimeout(() => {
+              entry.target.style.transform = 'translateY(0) scale(1)';
+            }, 100);
+          }
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with animation classes
+    document.querySelectorAll('.animate-fadeInUp, .animate-fadeInLeft, .animate-fadeInRight').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        const menu = document.getElementById('mobileMenu');
+        const menuBtn = document.getElementById('menuBtn');
+        const icon = menuBtn.querySelector('i');
+        
+        menu.classList.add('hidden');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      });
+    });
+
+    // Enhanced smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Add parallax effect to hero section
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const hero = document.getElementById('hero');
+      const rate = scrolled * -0.5;
+      
+      if (hero) {
+        hero.style.transform = `translateY(${rate}px)`;
+      }
+    });
+
+    // Add loading animation
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+      
+      // Trigger animations after a small delay
+      setTimeout(() => {
+        document.querySelectorAll('.opacity-0').forEach((el, index) => {
+          setTimeout(() => {
+            el.classList.add('opacity-100');
+          }, index * 100);
+        });
+      }, 500);
+    });
+
+    // Add hover effects for team members
+    document.querySelectorAll('.team-image').forEach(img => {
+      img.addEventListener('mouseenter', function() {
+        this.style.filter = 'grayscale(0) brightness(1.1)';
+      });
+      
+      img.addEventListener('mouseleave', function() {
+        this.style.filter = 'grayscale(0.3) brightness(1)';
+      });
+    });
+
+    // Add typing effect for hero text (optional enhancement)
+    function typeWriter(element, text, speed = 50) {
+      let i = 0;
+      element.innerHTML = '';
+      
+      function type() {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      type();
+    }
+
+    // Initialize typing effect on load
+    setTimeout(() => {
+      const heroSubtitle = document.querySelector('#hero p');
+      if (heroSubtitle) {
+        const originalText = heroSubtitle.textContent;
+        typeWriter(heroSubtitle, originalText, 30);
+      }
+    }, 2000);
+  </script>
 </body>
 
 </html>
