@@ -96,6 +96,17 @@
       }
     }
 
+    /* Infinite slider animation */
+    @keyframes slideInfinite {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
     .animate-fadeInUp {
       animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
@@ -118,6 +129,10 @@
 
     .animate-glow {
       animation: glow 2s ease-in-out infinite;
+    }
+
+    .animate-slide-infinite {
+      animation: slideInfinite 60s linear infinite;
     }
 
     .delay-200 {
@@ -323,6 +338,33 @@
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
+    }
+
+    /* Team slider styles */
+    .team-slider-container {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+
+    .team-slider-track {
+      display: flex;
+      width: max-content;
+    }
+
+    .team-slide {
+      flex: 0 0 auto;
+      width: 300px;
+      margin: 0 20px;
+    }
+
+    .team-slide-content {
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .team-slide:hover .team-slide-content {
+      transform: translateY(-10px);
     }
   </style>
 </head>
@@ -590,7 +632,7 @@
     </div>
   </section>
 
-  <!-- Enhanced Team Section -->
+  <!-- Enhanced Team Section with Infinite Slider -->
   <section id="team" class="py-20 section-gradient-3">
     <div class="container mx-auto px-6">
       <div class="text-center mb-16">
@@ -606,25 +648,27 @@
         </p>
       </div>
 
-      <div class="space-y-12">
-        <!-- john -->
-        <div class="text-center opacity-0 animate-fadeInUp delay-200 group col-span-full">
-          <div class="relative inline-block mb-6">
-            <div
-              class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+      <!-- Team Slider -->
+      <div class="team-slider-container">
+        <div class="team-slider-track animate-slide-infinite">
+          <!-- Team Member 1 -->
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/john_pic.webp" alt="John Robert M. Ocumen"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">John Robert M. Ocumen</h3>
+              <p class="text-emerald-600 font-semibold text-lg">CEO / CFO</p>
             </div>
-            <img src="images/john_pic.webp" alt="John Robert M. Ocumen"
-              class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
           </div>
-          <h3 class="text-2xl font-bold text-gray-800 mb-2">John Robert M. Ocumen</h3>
-          <p class="text-emerald-600 font-semibold text-lg">CEO / CFO </p>
-        </div>
 
-        <!-- top mid part -->
-        <div class="grid gap-12 justify-items-center grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-          <div class="col-span-full flex flex-wrap justify-evenly w-full gap-12">
-            <!-- reymar -->
-            <div class="text-center opacity-0 animate-fadeInUp delay-600 group">
+          <!-- Team Member 2 -->
+          <div class="team-slide">
+            <div class="team-slide-content">
               <div class="relative inline-block mb-6">
                 <div
                   class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
@@ -635,19 +679,11 @@
               <h3 class="text-2xl font-bold text-gray-800 mb-2">Reymar Valera</h3>
               <p class="text-emerald-600 font-semibold text-lg">Operations Manager</p>
             </div>
+          </div>
 
-            <!-- leo -->
-            <!-- <div class="text-center opacity-0 animate-fadeInUp delay-1000 group">
-            <div class="relative inline-block mb-6">
-              <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
-              <img src="images/leo_pic.webp" alt="John Leonard Galao" class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">John Leonard Galao</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Operations Manager</p>
-        </div> -->
-
-            <!-- carl -->
-            <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
+          <!-- Team Member 3 -->
+          <div class="team-slide">
+            <div class="team-slide-content">
               <div class="relative inline-block mb-6">
                 <div
                   class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
@@ -660,155 +696,194 @@
             </div>
           </div>
 
-          <!-- chairles -->
-          <div class="text-center opacity-0 animate-fadeInUp delay-800 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+          <!-- Team Member 4 -->
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/cha_pic.webp" alt="Chairles Adane"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
               </div>
-              <img src="images/cha_pic.webp" alt="Chairles Adane"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Chairles Adane</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Clerk / Programmer</p>
             </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Chairles Adane</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Clerk / Programmer</p>
           </div>
 
-          <!-- andrew -->
-          <div class="text-center opacity-0 animate-fadeInUp delay-1000 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+          <!-- Team Member 5 -->
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/andrew_pic.webp" alt="Andrew Lacambra"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
               </div>
-              <img src="images/andrew_pic.webp" alt="Andrew Lacambra"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Andrew Lacambra</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Software Consultant / Programmer</p>
             </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Andrew Lacambra</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Software Consultant / Programmer</p>
           </div>
 
-          <!-- euro -->
-          <div class="text-center opacity-0 animate-fadeInUp delay-1000 group max-xl:col-span-full">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+          <!-- Team Member 6 -->
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/euro_pic.webp" alt="Euro Abao"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
               </div>
-              <img src="images/euro_pic.webp" alt="Euro Abao"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Euro Abao</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Clerk / Programmer</p>
             </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Euro Abao</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Clerk / Programmer</p>
+          </div>
+
+          <!-- Team Member 7 -->
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/jiselle_pic.webp" alt="Jiselle Mae E. Romasoc"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Jiselle Mae E. Romasoc</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Finance</p>
+            </div>
+          </div>
+
+          <!-- Team Member 8 -->
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/edward_pic.webp" alt="Edward Laguinlin"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Edward Laguinlin</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Safety Officer</p>
+            </div>
+          </div>
+
+          <!-- Duplicate slides for seamless infinite loop -->
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/john_pic.webp" alt="John Robert M. Ocumen"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">John Robert M. Ocumen</h3>
+              <p class="text-emerald-600 font-semibold text-lg">CEO / CFO</p>
+            </div>
+          </div>
+
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/reymar_pic.webp" alt="Reymar Valera"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Reymar Valera</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Operations Manager</p>
+            </div>
+          </div>
+
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/carlito_pic.webp" alt="Carlito Tan"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Carlito Tan</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Operations Manager</p>
+            </div>
+          </div>
+
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/cha_pic.webp" alt="Chairles Adane"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Chairles Adane</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Clerk / Programmer</p>
+            </div>
+          </div>
+
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/andrew_pic.webp" alt="Andrew Lacambra"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Andrew Lacambra</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Software Consultant / Programmer</p>
+            </div>
+          </div>
+
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/euro_pic.webp" alt="Euro Abao"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Euro Abao</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Clerk / Programmer</p>
+            </div>
+          </div>
+
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/jiselle_pic.webp" alt="Jiselle Mae E. Romasoc"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Jiselle Mae E. Romasoc</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Finance</p>
+            </div>
+          </div>
+
+          <div class="team-slide">
+            <div class="team-slide-content">
+              <div class="relative inline-block mb-6">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                </div>
+                <img src="images/edward_pic.webp" alt="Edward Laguinlin"
+                  class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
+              </div>
+              <h3 class="text-2xl font-bold text-gray-800 mb-2">Edward Laguinlin</h3>
+              <p class="text-emerald-600 font-semibold text-lg">Safety Officer</p>
+            </div>
           </div>
         </div>
-
-        <!-- mid part -->
-        <div class="flex flex-wrap justify-evenly w-full gap-12">
-          <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-              </div>
-              <img src="images/jiselle_pic.webp" alt="John Robert M. Ocumen"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Jiselle Mae E. Romasoc</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Finance </p>
-          </div>
-
-          <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-              </div>
-              <img src="images/edward_pic.webp" alt="John Robert M. Ocumen"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Edward Laguinlin</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Safety Officer </p>
-          </div>
-        </div>
-
-        <!-- bottom part -->
-        <div class="col-span-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12">
-
-          <!-- edwin -->
-          <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-              </div>
-              <img src="images/edwin_pic.webp" alt="John Robert M. Ocumen"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Edwin Baladad</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Field Supervisor</p>
-          </div>
-
-          <!-- james -->
-          <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-              </div>
-              <img src="images/james_pic.webp" alt="John Robert M. Ocumen"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">James Aballera</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Field Supervisor</p>
-          </div>
-
-          <!-- joefferson -->
-          <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-              </div>
-              <img src="images/joefferson_pic.webp" alt="John Robert M. Ocumen"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Joefferson Remandaban</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Field Supervisor</p>
-          </div>
-
-          <!-- joshua -->
-          <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-              </div>
-              <img src="images/joshua_pic.webp" alt="John Robert M. Ocumen"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Joshua Glory</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Field Supervisor</p>
-          </div>
-
-          <!-- joshua -->
-          <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-              </div>
-              <img src="images/desnnis_pic.webp" alt="John Robert M. Ocumen"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Dennis Agsaoay</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Field Supervisor</p>
-          </div>
-
-          <!-- alger -->
-          <div class="text-center opacity-0 animate-fadeInUp delay-200 group">
-            <div class="relative inline-block mb-6">
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-              </div>
-              <img src="images/aljer_pic.webp" alt="John Robert M. Ocumen"
-                class="w-80 h-80 mx-auto rounded-full shadow-2xl team-image object-cover relative border-4 border-white">
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Alger Sangil</h3>
-            <p class="text-emerald-600 font-semibold text-lg">Field Supervisor</p>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -1012,7 +1087,7 @@
       <!-- Subtitle -->
       <p
         class="text-emerald-200 mt-6 mb-12 max-w-2xl mx-auto backdrop-blur-md bg-white/5 px-6 py-3 rounded-xl border border-emerald-400/20 shadow-lg">
-        Visit <span class="font-semibold text-white">YZA Agricultural Services</span> – we’re just a click away!
+        Visit <span class="font-semibold text-white">YZA Agricultural Services</span> – we're just a click away!
       </p>
 
       <div id="leafletMap" style="height: 680px; border-radius: 16px; overflow: hidden;"></div>
